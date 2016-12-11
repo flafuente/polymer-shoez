@@ -1,0 +1,130 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/google-apis/google-maps-api.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+
+<!--
+Example:
+
+    <suggest-box></suggest-box>
+
+@demo
+-->
+<dom-module id="suggest-box">
+
+    <style>
+         :host {
+            display: block;
+            box-sizing: border-box;
+            /* Input foreground color */
+            --paper-input-container-input-color: white;
+            /* Label and underline color when the input is focused */
+            --paper-input-container-focus-color: var(--paper-lime-500);
+            /* Label and underline color when the input is not focused */
+            --paper-input-container-color: white;
+        }
+
+        paper-card {
+            width: 100%;
+        }
+
+
+        .cyan {
+            background: var(--paper-cyan-500);
+        }
+
+        paper-card.cyan {
+            color: white;
+            --paper-card-header-color: white;
+        }
+    </style>
+
+    <template>
+    <google-maps-api
+      api-key="[[apiKey]]"
+      signed-in="false"
+      on-api-load="_mapsApiLoaded"></google-maps-api>
+
+    <paper-card heading="Where are you planning to go today?" class="cyan">
+      <div class="card-actions">
+        <paper-input id="streetName" type="text" placeholder="" label="Street Name" autofocus></paper-input>
+      </div>
+    </paper-card>
+  </template>
+
+</dom-module>
+
+<script>
+    Polymer({
+
+        is: 'suggest-box',
+
+        properties: {
+            /**
+             * A Google Maps API key. To obtain an API key, see developers.google.com/maps/documentation/javascript/tutorial#api_key.
+             */
+            apiKey: String,
+            // Coords
+            lat: {
+                type: Number,
+
+                notify: true,
+                reflectToAttribute: true
+            },
+            lng: {
+                type: Number,
+
+                notify: true,
+                reflectToAttribute: true
+            }
+
+        },
+
+        ready: function() {},
+
+        detached: function() {
+            this.autocomplete = null;
+            window.google = null;
+        },
+
+        _mapsApiLoaded: function() {
+            this._initialize();
+        },
+
+        _initialize: function() {
+            if (!this.isAttached) {
+                return;
+            }
+            if (this.autocomplete) {
+                return;
+            }
+            if (!(window.google && window.google.maps)) {
+                return;
+            }
+
+            var input = this.$.streetName;
+            var options = {
+                types: ['address']
+            };
+            this.autocomplete = new window.google.maps.places.Autocomplete(input, options);
+
+            this._boundFillInAddress = this._obtainCoords.bind(this);
+            window.google.maps.event.addListener(this.autocomplete, 'place_changed', this._boundFillInAddress);
+
+            input.addEventListener('click', function() {
+                setTimeout(this._boundFillInAddress, 0);
+            }.bind(this));
+        },
+
+        _obtainCoords: function() {
+            var place = this.autocomplete.getPlace();
+            if (!place) {
+                return;
+            }
+            this.lat = place.geometry.location.lat();
+            this.lng = place.geometry.location.lng();
+            console.log("[Setted] Lat and Lon", this.lat, this.lng);
+        }
+
+    });
+</script>

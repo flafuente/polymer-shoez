@@ -1,0 +1,44 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<!-- shared styles for all views -->
+<dom-module id="shared-styles">
+  <template>
+    <style>
+    paper-card {
+        width: 100%;
+    }
+
+    .horizontal {
+        @apply(--layout-horizontal);
+    }
+
+    .justified {
+        @apply(--layout-justified);
+    }
+
+    .amber {
+        background: var(--paper-amber-900);
+    }
+
+    .lime {
+        background: var(--paper-lime-500);
+    }
+
+    .cyan {
+        background: var(--paper-cyan-500);
+    }
+
+    .dark {
+        background: var(--paper-blue-grey-500);
+    }
+
+    paper-card.dark,
+    paper-card.amber,
+    paper-card.lime,
+    paper-card.cyan {
+        color: white;
+        --paper-card-header-color: white;
+    }
+    </style>
+  </template>
+</dom-module>

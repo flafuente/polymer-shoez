@@ -1,0 +1,92 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+
+<dom-module id="shoe-recommendation">
+    <template>
+      <style include="shared-styles">
+      :host {
+
+            padding:30px;
+            width:100%;
+          }
+          #notes h2 {
+            text-align: center;
+          }
+          #notes {
+            @apply(--layout-horizontal);
+            @apply(--layout-wrap);
+            width: 100%;
+          }
+
+          #notes > paper-card {
+            box-sizing: border-box;
+            width:32%;
+            margin: 4px;
+          }
+          .amber {
+  background: var(--paper-amber-900);
+}
+.lime {
+  background: var(--paper-lime-500);
+}
+.cyan {
+  background: var(--paper-cyan-500);
+}
+.dark {
+  background: var(--paper-blue-grey-500);
+}
+paper-card.dark, paper-card.amber, paper-card.lime, paper-card.cyan {
+  color: white;
+  --paper-card-header-color: white;
+}
+      </style>
+
+      <div id="notes">
+        <paper-card class="dark">
+          <div class="card-content">
+            <p>Groceries:</p>
+          </div>
+          <div class="card-actions">
+            <h2>90%</h2>
+          </div>
+        </paper-card>
+        <paper-card class="amber">
+          <div class="card-content">
+            <p>Groceries:</p>
+          </div>
+          <div class="card-actions">
+            <h2>90%</h2>
+          </div>
+        </paper-card>
+        <paper-card class="lime">
+          <div class="card-content">
+            <p>Groceries:</p>
+          </div>
+          <div class="card-actions">
+            <h2>90%</h2>
+          </div>
+        </paper-card>
+      </div>
+    </template>
+
+    <script>
+        Polymer({
+            is: 'shoe-recommendation',
+
+            properties: {
+
+                stats: {
+                    type: Object,
+                    observer: '_dataReceived'
+                }
+            },
+
+            _dataReceived: function(stats) {
+              // Get min
+              // Get max
+              // Get diff
+              console.log(stats);
+            }
+        });
+    </script>
+</dom-module>

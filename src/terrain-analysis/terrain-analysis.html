@@ -1,0 +1,57 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/google-chart/google-chart.html">
+
+
+<dom-module id="terrain-analysis">
+    <template>
+      <style include="shared-styles">
+      :host {
+            display: block;
+            padding:30px;
+            width:100%;
+          }
+          google-chart{
+            width:100%;
+          }
+      </style>
+
+      <google-chart
+        type="line"
+        options='{"legend": "none"}'
+        cols='[[labels]]'
+        rows='[[rows]]'></google-chart>
+    </template>
+
+    <script>
+        Polymer({
+            is: 'terrain-analysis',
+
+            properties: {
+                coords: {
+                    type: Object,
+                    observer: '_dataReceived'
+                },
+                stats: {
+                    type: Object,
+                    notify: true
+                }
+            },
+
+            _dataReceived: function(elevations) {
+              // Populate labels
+              this.labels = [{"label":"", "type": "string"}, {"label":"Elevation", "type": "number"}]
+
+              //Populate rows
+              var rows = [];
+              var unique = [];
+              for (var i = 0; i < elevations.length; i++) {
+                var value = Math.round(elevations[i].elevation);
+                rows[i] = [' ',value];
+                unique[value] = true;
+              }
+              this.stats = unique;
+              this.rows= rows;
+            }
+        });
+    </script>
+</dom-module>
