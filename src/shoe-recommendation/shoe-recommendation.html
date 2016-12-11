@@ -1,9 +1,10 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
 
 
 <dom-module id="shoe-recommendation">
     <template>
-      <style include="shared-styles">
+      <style>
       :host {
 
             padding:30px;
@@ -20,50 +21,85 @@
 
           #notes > paper-card {
             box-sizing: border-box;
-            width:32%;
+            width:32.8%;/*ADJUST WITH MEDIAS*/
             margin: 4px;
           }
+          @media (max-width: 1530px) {
+            #notes > paper-card {
+              width:32.5%;
+            }
+          }
+          @media (max-width: 980px) {
+            #notes > paper-card {
+              width:32%;
+            }
+          }
+          @media (max-width: 620px) {
+            #notes > paper-card {
+              width:31.5%;
+            }
+          }
+          @media (max-width: 452px) {
+            #notes > paper-card {
+              width:30.5%;
+            }
+          }
+          .quick-action{
+            width: 70px;
+            height: 70px;
+            border-radius: 70px;
+            background: #e91e63;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12),0 1px 2px rgba(0,0,0,0.24);
+            margin:0 auto;
+            color: #fff;
+            text-align: center;
+            line-height: 70px;
+            font-size: 20pt;
+          }
           .amber {
-  background: var(--paper-amber-900);
-}
-.lime {
-  background: var(--paper-lime-500);
-}
-.cyan {
-  background: var(--paper-cyan-500);
-}
-.dark {
-  background: var(--paper-blue-grey-500);
-}
-paper-card.dark, paper-card.amber, paper-card.lime, paper-card.cyan {
-  color: white;
-  --paper-card-header-color: white;
-}
+            background: var(--paper-amber-900);
+          }
+          .lime {
+            background: var(--paper-lime-500);
+          }
+          .cyan {
+            background: var(--paper-cyan-500);
+          }
+          .dark {
+            background: var(--paper-blue-grey-500);
+          }
+          paper-card.dark, paper-card.amber, paper-card.lime, paper-card.cyan {
+            color: white;
+            --paper-card-header-color: white;
+          }
       </style>
 
       <div id="notes">
-        <paper-card class="dark">
+        <paper-card image="assets/set1a.png" class="dark">
           <div class="card-content">
-            <p>Groceries:</p>
           </div>
           <div class="card-actions">
-            <h2>90%</h2>
+            <div class="quick-action">
+          		[[easyLevel]]%
+          	</div>
           </div>
         </paper-card>
-        <paper-card class="amber">
+        <paper-card image="assets/set2a.png" class="amber">
           <div class="card-content">
-            <p>Groceries:</p>
           </div>
           <div class="card-actions">
-            <h2>90%</h2>
+            <div class="quick-action">
+          		[[mediumLevel]]%
+          	</div>
           </div>
         </paper-card>
-        <paper-card class="lime">
+        <paper-card image="assets/set3a.png" class="lime">
           <div class="card-content">
-            <p>Groceries:</p>
           </div>
           <div class="card-actions">
-            <h2>90%</h2>
+            <div class="quick-action">
+          		[[hardLevel]]%
+          	</div>
           </div>
         </paper-card>
       </div>
@@ -78,14 +114,56 @@ paper-card.dark, paper-card.amber, paper-card.lime, paper-card.cyan {
                 stats: {
                     type: Object,
                     observer: '_dataReceived'
+                },
+                easyLevel:  {
+                    type: Number,
+                    value: 0
+                },
+                mediumLevel: {
+                    type: Number,
+                    value: 0
+                },
+                hardLevel: {
+                    type: Number,
+                    value: 0
                 }
+            },
+            ready: function() {
             },
 
             _dataReceived: function(stats) {
-              // Get min
-              // Get max
-              // Get diff
-              console.log(stats);
+
+              //TODO Make it more complex...
+              if(stats.vol < 10){
+                this.easyLevel = 70;
+                this.mediumLevel = 30;
+                this.hardLevel = 0;
+              }else if(stats.vol < 20){
+                this.easyLevel = 55;
+                this.mediumLevel = 40;
+                this.hardLevel = 5;
+              }else if(stats.vol < 30){
+                this.easyLevel = 25;
+                this.mediumLevel = 50;
+                this.hardLevel = 25;
+              }else if(stats.vol < 40){
+                this.easyLevel = 5;
+                this.mediumLevel = 45;
+                this.hardLevel = 50;
+              }else if(stats.vol < 50){
+                this.easyLevel = 2;
+                this.mediumLevel = 25;
+                this.hardLevel = 73;
+              }else if(stats.vol < 60){
+                this.easyLevel = 2;
+                this.mediumLevel = 15;
+                this.hardLevel = 83;
+              }else if(stats.vol >= 60){
+                this.easyLevel = 0;
+                this.mediumLevel = 5;
+                this.hardLevel = 95;
+
+              }
             }
         });
     </script>
