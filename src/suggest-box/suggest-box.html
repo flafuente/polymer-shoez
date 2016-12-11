@@ -28,7 +28,6 @@ Example:
             width: 100%;
         }
 
-
         .cyan {
             background: var(--paper-cyan-500);
         }
@@ -65,14 +64,8 @@ Example:
              */
             apiKey: String,
             // Coords
-            lat: {
-                type: Number,
-
-                notify: true,
-                reflectToAttribute: true
-            },
-            lng: {
-                type: Number,
+            position: {
+                type: Object,
 
                 notify: true,
                 reflectToAttribute: true
@@ -108,12 +101,10 @@ Example:
             };
             this.autocomplete = new window.google.maps.places.Autocomplete(input, options);
 
-            this._boundFillInAddress = this._obtainCoords.bind(this);
-            window.google.maps.event.addListener(this.autocomplete, 'place_changed', this._boundFillInAddress);
-
-            input.addEventListener('click', function() {
-                setTimeout(this._boundFillInAddress, 0);
-            }.bind(this));
+            var _this = this;
+            window.google.maps.event.addListener(this.autocomplete, 'place_changed', function functionName() {
+                _this._obtainCoords();
+            });
         },
 
         _obtainCoords: function() {
@@ -121,9 +112,11 @@ Example:
             if (!place) {
                 return;
             }
-            this.lat = place.geometry.location.lat();
-            this.lng = place.geometry.location.lng();
-            console.log("[Setted] Lat and Lon", this.lat, this.lng);
+            this.position = {
+                "lat": place.geometry.location.lat(),
+                "lng": place.geometry.location.lng()
+            };
+            console.log("[Setted] Lat and Lon", this.position);
         }
 
     });

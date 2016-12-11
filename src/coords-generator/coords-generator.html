@@ -26,8 +26,10 @@
                * A Google Maps API key. To obtain an API key, see developers.google.com/maps/documentation/javascript/tutorial#api_key.
                */
               apiKey: String,
-              lat: Number,
-              lng: Number,
+              position: {
+                  type: Object,
+                  observer: '_generateCoords'
+              },
               coords: {
                   type: Object,
                   notify: true
@@ -37,9 +39,6 @@
                   observer: '_elevationDataResponse'
               }
             },
-            observers: [
-                '_generateCoords(lat, lng)'
-            ],
             ready: function() {
 
             },
@@ -55,8 +54,8 @@
 
               var _this = this;
 
-              this.elevator = new window.google.maps.ElevationService;
-              this.elevator.getElevationAlongPath({
+              var elevator = new window.google.maps.ElevationService;
+              elevator.getElevationAlongPath({
                 'path': coords,
                 'samples': 200
               }, function (results, status) {
@@ -65,7 +64,9 @@
               });
             },
 
-            _generateCoords: function(lat, lng) {
+            _generateCoords: function(position) {
+                var lat = position.lat;
+                var lng = position.lng;
                 var coords = [];
                 for (i = 0; i < 10; i++) {
                     coords.push(this._createRandomCoord(lat, lng));

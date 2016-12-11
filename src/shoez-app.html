@@ -17,8 +17,8 @@
   <paper-toolbar>
     <span class="title">It's all about the shoeZ</span>
   </paper-toolbar>
-  <suggest-box api-key="AIzaSyDp-Lm-eIfClNoP-vJf88ai-bWBgBVj8WM" lat="{{lat}}" lng="{{lng}}"></suggest-box>
-  <coords-generator api-key="AIzaSyDp-Lm-eIfClNoP-vJf88ai-bWBgBVj8WM" lat="[[lat]]" lng="[[lng]]" coords="{{coords}}"></coords-generator>
+  <suggest-box api-key="AIzaSyDp-Lm-eIfClNoP-vJf88ai-bWBgBVj8WM" position="{{position}}"></suggest-box>
+  <coords-generator api-key="AIzaSyDp-Lm-eIfClNoP-vJf88ai-bWBgBVj8WM" position="[[position]]" coords="{{coords}}"></coords-generator>
   <terrain-analysis coords="[[coords]]" stats="{{stats}}"></terrain-analysis>
   <shoe-recommendation stats="[[stats]]"></shoe-recommendation>
   </template>
@@ -29,8 +29,7 @@
       is: 'shoez-app',
 
       properties: {
-        lat: Number,
-        lng: Number,
+        position: Object,
         coords: Object,
         stats: Object
       }
