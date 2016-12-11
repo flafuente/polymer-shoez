@@ -1,25 +1,29 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/google-chart/google-chart.html">
 
-
 <dom-module id="terrain-analysis">
     <template>
-      <style include="shared-styles">
+      <style>
       :host {
             display: block;
-            padding:30px;
+            margin-top:15px;
             width:100%;
           }
-          google-chart{
+          google-chart, paper-card{
             width:100%;
           }
       </style>
 
-      <google-chart
-        type="line"
-        options='{"legend": "none"}'
-        cols='[[labels]]'
-        rows='[[rows]]'></google-chart>
+
+        <paper-card>
+          <div class="card-content">
+            <google-chart
+              type="line"
+              options='{"legend": "none"}'
+              cols='[[labels]]'
+              rows='[[rows]]'></google-chart>
+          </div>
+        </paper-card>
     </template>
 
     <script>
@@ -36,7 +40,28 @@
                     notify: true
                 }
             },
+            _calculateVolatility: function(values) {
+              var avg = this._average(values);
 
+              var squareDiffs = values.map(function(value){
+                var diff = value - avg;
+                var sqrDiff = diff * diff;
+                return sqrDiff;
+              });
+
+              var avgSquareDiff = this._average(squareDiffs);
+
+              var stdDev = Math.sqrt(avgSquareDiff);
+              return stdDev;
+            },
+            _average: function(data) {
+              var sum = data.reduce(function(sum, value){
+                return sum + value;
+              }, 0);
+
+              var avg = sum / data.length;
+              return avg;
+            },
             _dataReceived: function(elevations) {
               // Populate labels
               this.labels = [{"label":"", "type": "string"}, {"label":"Elevation", "type": "number"}]
@@ -47,9 +72,15 @@
               for (var i = 0; i < elevations.length; i++) {
                 var value = Math.round(elevations[i].elevation);
                 rows[i] = [' ',value];
-                unique[value] = true;
+                if(i>0){
+                  var prev = Math.round(elevations[i-1].elevation);
+                    unique.push(Math.log(value, prev));
+                }
+
+
               }
-              this.stats = unique;
+              this.stats = {"vol":(this._calculateVolatility(unique)*10000)};
+              console.log("[Setted] Volatility", this.stats);
               this.rows= rows;
             }
         });
