@@ -2,6 +2,12 @@
 
 Terrain analysis and shoe type recommendation based on a specific location.
 
+##### Screenshots
+![Screenshot 1](https://raw.githubusercontent.com/flafuente/polymer-shoez/dev/assets/sample.png)
+
+##### Live Demo
+[shoez.algui.com](https://shoez.algui.com)
+
 ## Install the Polymer-CLI
 
 First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polymer-cli) installed. Then run `polymer serve` to serve your application locally.
