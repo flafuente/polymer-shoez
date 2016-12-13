@@ -1,0 +1,7 @@
+{
+  "name": "polymer-shoez",
+  "short_name": "polymer-shoez",
+  "description": "Terrain analysis and shoe type recommendation based on a specific location.",
+  "start_url": "/",
+  "display": "standalone"
+}

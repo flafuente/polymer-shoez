@@ -1,0 +1,100 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/google-apis/google-maps-api.html">
+
+<dom-module id="coords-generator">
+    <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+
+    <google-maps-api
+      api-key="[[apiKey]]"
+      signed-in="false"></google-maps-api>
+
+      <!-- <div id="elevation_chart"></div> -->
+  </template>
+
+    <script>
+        Polymer({
+
+            is: 'coords-generator',
+
+            properties: {
+              /**
+               * A Google Maps API key. To obtain an API key, see developers.google.com/maps/documentation/javascript/tutorial#api_key.
+               */
+              apiKey: String,
+              position: {
+                  type: Object,
+                  observer: '_generateCoords'
+              },
+              coords: {
+                  type: Object,
+                  notify: true
+              },
+              elevationData: {
+                  type: Object,
+                  observer: '_elevationDataResponse'
+              }
+            },
+            ready: function() {
+
+            },
+
+            _initialize: function(coords) {
+
+              if (this.autocomplete) {
+                return;
+              }
+              if (!(window.google && window.google.maps)) {
+                return;
+              }
+
+              var _this = this;
+
+              var elevator = new window.google.maps.ElevationService;
+              elevator.getElevationAlongPath({
+                'path': coords,
+                'samples': 200
+              }, function (results, status) {
+                _this.coords = results;
+                console.log("[Setted] Coords", _this.coords);
+              });
+            },
+
+            _generateCoords: function(position) {
+                var lat = position.lat;
+                var lng = position.lng;
+                var coords = [];
+                for (i = 0; i < 10; i++) {
+                    coords.push(this._createRandomCoord(lat, lng));
+                }
+
+                this._initialize(coords);
+            },
+
+            _createRandomCoord: function(lat, lng) {
+                var r = 50 / 111300 // = 100 meters
+                    ,
+                    y0 = lat,
+                    x0 = lng,
+                    u = Math.random(),
+                    v = Math.random(),
+                    w = r * Math.sqrt(u),
+                    t = 2 * Math.PI * v,
+                    x = w * Math.cos(t),
+                    y1 = w * Math.sin(t),
+                    x1 = x / Math.cos(y0)
+
+                var newY = y0 + y1
+                var newX = x0 + x1
+                return {
+                    "lat": newY,
+                    "lng": newX
+                };
+            }
+        });
+    </script>
+</dom-module>
