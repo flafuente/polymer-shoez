@@ -1,1 +1,5 @@
 bower_components
+public
+.firebaserc
+database.rules.json
+firebase.json
