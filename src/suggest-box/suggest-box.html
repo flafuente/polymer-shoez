@@ -105,6 +105,15 @@ Example:
             window.google.maps.event.addListener(this.autocomplete, 'place_changed', function functionName() {
                 _this._obtainCoords();
             });
+            
+            // iOS fix need to stop prop of the touchend event
+            if (navigator.userAgent.match(/(iPad|iPhone|iPod)/g)) {
+                setTimeout(function() {
+                    input.addEventListener('touchend', function(e) {
+                        e.stopImmediatePropagation();
+                    });
+                }, 500);
+            }
         },
 
         _obtainCoords: function() {
