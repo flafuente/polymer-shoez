@@ -132,38 +132,9 @@
             },
 
             _dataReceived: function(stats) {
-
-              //TODO Make it more complex...
-              if(stats.vol < 10){
-                this.easyLevel = 70;
-                this.mediumLevel = 30;
-                this.hardLevel = 0;
-              }else if(stats.vol < 20){
-                this.easyLevel = 55;
-                this.mediumLevel = 40;
-                this.hardLevel = 5;
-              }else if(stats.vol < 30){
-                this.easyLevel = 25;
-                this.mediumLevel = 50;
-                this.hardLevel = 25;
-              }else if(stats.vol < 40){
-                this.easyLevel = 5;
-                this.mediumLevel = 45;
-                this.hardLevel = 50;
-              }else if(stats.vol < 50){
-                this.easyLevel = 2;
-                this.mediumLevel = 25;
-                this.hardLevel = 73;
-              }else if(stats.vol < 60){
-                this.easyLevel = 2;
-                this.mediumLevel = 15;
-                this.hardLevel = 83;
-              }else if(stats.vol >= 60){
-                this.easyLevel = 0;
-                this.mediumLevel = 5;
-                this.hardLevel = 95;
-
-              }
+              this.easyLevel = Math.round(stats.tier1 * 100);
+              this.mediumLevel = Math.round(stats.tier2 * 100);
+              this.hardLevel = Math.round(stats.tier3 * 100);
             }
         });
     </script>
