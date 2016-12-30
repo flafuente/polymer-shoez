@@ -6,7 +6,7 @@ Terrain analysis and shoe type recommendation based on a specific location.
 ![Screenshot 1](https://raw.githubusercontent.com/flafuente/polymer-shoez/dev/assets/sample.png)
 
 ##### Live Demo
-[shoez.algui.com](https://shoez.algui.com)
+[atilaz.com](https://atilaz.com)
 
 ## Install the Polymer-CLI
 
